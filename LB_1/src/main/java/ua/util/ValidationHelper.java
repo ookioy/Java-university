@@ -38,4 +38,24 @@ class ValidationHelper {
     static boolean isNotDateInThePast(LocalDate date) {
         return date != null && (date.isEqual(LocalDate.now()) || date.isAfter(LocalDate.now()));
     }
+    
+    /**
+     * Checks if a integer number is positive.
+     * 
+     * @param number the integer number to validate
+     * @return true if the number is positive
+     */
+    static boolean isPositiveNumber (int number) {
+    	return number > 0;
+    }
+    
+    /**
+     * Checks if a double number is positive.
+     * 
+     * @param number double number to validate
+     * @return true if the number is positive
+     */
+    static boolean isPositiveNumber(double number) {
+    	return number > 0;
+    }
 }

@@ -1,6 +1,7 @@
 package ua.hotel_managment;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import ua.util.Utils;
 
@@ -16,7 +17,8 @@ public class Guest {
 	private LocalDate checkInDate; // registration date
 	
 	/**
-	 * Constructor. Sets value to parameters of Guest by using setters. 
+	 * Constructor. Sets value to parameters of Guest by using setters.
+	 *  
 	 * @param firstName		guest's first name (can not be empty)
 	 * @param lastName		guest's last name (can not be empty)
  	 * @param email			guest's email (must be valid format)
@@ -24,20 +26,38 @@ public class Guest {
 	 * @throws IllegalArgumentException if any value is invalid
 	 */
 	public Guest(String firstName, String lastName, String email, LocalDate checkInDate) {
-		setFirstName(firstName);
-		setLastName(lastName);
-		setEmail(email);
-		setCheckInDate(checkInDate);
+		try {
+			setFirstName(firstName);
+			setLastName(lastName);
+			setEmail(email);
+			setCheckInDate(checkInDate);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Invalid guest's values. " + e);
+		}
 	}
 	
 	/**
+	 * Factory method. Creates object of class Guest.
+	 *  
+	 * @param firstName		guest's first name (can not be empty)
+	 * @param lastName		guest's last name (can not be empty)
+ 	 * @param email			guest's email (must be valid format)
+	 * @param checkInDate	guest's check in date (can not be null or in the past)
+	 * @throws IllegalArgumentException if any value is invalid
+	 */
+	public static Guest create(String firstName, String lastName, String email, LocalDate checkInDate) {
+		return new Guest(firstName, lastName, email, checkInDate);
+	}
+	/**
 	 * Returns first name of the guest.
+	 * 
 	 * @return firstName guest's first name
 	 */
 	public String getFirstName() { return firstName; }
 	 
 	/**
 	 * Set first name of the guest.
+	 * 
 	 * @param firstName first name
 	 * @throws IllegalArgumentException if string is empty or combine only spaces
 	 */
@@ -50,12 +70,14 @@ public class Guest {
 	
 	/**
 	 * Returns last name of the guest.
+	 * 
 	 * @return lastName guest's last name
 	 */
 	public String getLastName() { return lastName; }
 	 
 	/**
 	 * Set last name of the guest.
+	 * 
 	 * @param lastName last name
 	 * @throws IllegalArgumentException if string is empty or combine only spaces
 	 */
@@ -68,12 +90,14 @@ public class Guest {
 	
 	/**
 	 * Returns email of the guest.
+	 * 
 	 * @return email guest's email
 	 */
 	public String getEmail() { return email; }
 	 
 	/**
 	 * Set email of the guest.
+	 * 
 	 * @param email email
 	 * @throws IllegalArgumentException if string does not match the format of email
 	 */
@@ -86,18 +110,20 @@ public class Guest {
 	
 	/**
 	 * Returns check in date of the guest.
+	 * 
 	 * @return checkIn guest's registration date
 	 */
 	public LocalDate getCheckInDate() { return checkInDate; }
 	 
 	/**
 	 * Set check in date of the guest.
+	 * 
 	 * @param checkIn registration date
 	 * @throws IllegalArgumentException if registration date is in the past or null
 	 */
 	public void setCheckInDate(LocalDate checkInDate) {
 		if (!Utils.validateRegistrationDate(checkInDate)) {
-			throw new IllegalArgumentException("Check in date has not be in the past and be empty");
+			throw new IllegalArgumentException("Check in date has not be in the past or be empty");
 		}
 	    this.checkInDate = checkInDate;
 	}
@@ -123,28 +149,36 @@ public class Guest {
 
 	/**
 	 * Compares this Guest to another object for equality.
-	 * Two Guest objects are considered equal if they have the same email.
+	 * Two Guest objects are considered equal if they have the same fields.
 	 *
 	 * @param obj the object to compare with
-	 * @return true if the given object is a Guest with the same email, false otherwise
+	 * @return true if the given object is a Guest with the same fields, false otherwise
 	 */
 	@Override
-	public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (!(o instanceof Guest)) return false;
-	    Guest guest = (Guest) o;
-	    return email.equals(guest.email);
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Guest other = (Guest) obj;
+		return Objects.equals(checkInDate, other.checkInDate) && Objects.equals(email, other.email)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName);
 	}
-
+	
 	/**
 	 * Returns a hash code value for the Guest object.
-	 * This method is consistent with equals(), using the email field.
+	 * This method is consistent with equals(), using all fields.
 	 *
-	 * @return hash code of the email
+	 * @return hash code of all fields
 	 */
 	@Override
 	public int hashCode() {
-	    return email.hashCode();
+		return Objects.hash(checkInDate, email, firstName, lastName);
 	}
 
 	

@@ -37,4 +37,24 @@ public class Utils {
     public static boolean validateRegistrationDate(LocalDate date) {
         return ValidationHelper.isNotDateInThePast(date);
     }
+    
+    /**
+     * Validates if a number is positive number.
+     *
+     * @param number integer value to validate
+     * @return true if the number is positive
+     */
+    public static boolean validatePositiveNumber(int number) {
+    	return ValidationHelper.isPositiveNumber(number);
+    }
+    
+    /**
+     * Validates if a number is positive number.
+     *
+     * @param number double value to validate
+     * @return true if the number is positive
+     */
+    public static boolean validatePositiveNumber(double number) {
+    	return ValidationHelper.isPositiveNumber(number);
+    }
 }
