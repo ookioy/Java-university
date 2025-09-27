@@ -33,6 +33,8 @@ public class Room {
 			setPrice(price);
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException("Invalid room's value. " + e);
+		} catch (NullPointerException e) {
+			throw new NullPointerException("Invalid room's value. " + e);
 		}
 	}
 	
@@ -84,11 +86,11 @@ public class Room {
 	 * Sets value of room's type.
 	 * 
 	 * @param type room's type
-	 * @throws IllegalArgumentException if the room's type is empty.
+	 * @throws NullPointerException if the room's type is empty.
 	 */
 	public void setType(String type) {
-		if(!Utils.validateString(type)) {
-			throw new IllegalArgumentException("Type must be not empty.");
+		if(!Utils.validateObject(type) || !Utils.validateString(type)) {
+			throw new NullPointerException("Type must be not empty.");
 		}
 		this.type = type;
 	}
@@ -169,6 +171,18 @@ public class Room {
 		Room other = (Room) obj;
 		return capacity == other.capacity && Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
 				&& roomNumber == other.roomNumber && Objects.equals(type, other.type);
+	}
+
+	/**
+	 * Returns a string representation of the Room object.
+	 * Includes the guest's roomNumber, type, capacity and price.
+	 *
+	 * @return a formatted string with the room's details
+	 */
+	@Override
+	public String toString() {
+		return "Room [roomNumber=" + roomNumber + ", type=" + type + ", capacity=" + capacity + ", price=" + price
+				+ "]";
 	}
 	
 	
